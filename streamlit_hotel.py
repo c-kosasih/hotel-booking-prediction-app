@@ -18,7 +18,7 @@ def user_input_form():
         required_car_parking_space = st.selectbox("Required Car Parking Space", [0, 1])
         room_type_reserved = st.selectbox("Room Type Reserved", ['Room_Type 1', 'Room_Type 2', 'Room_Type 3', 'Room_Type 4', 'Room_Type 5', 'Room_Type 6', 'Room_Type 7'])
         lead_time = st.number_input("Number of Days Between Booking and Arrival", min_value=0, value=1, help="= Number of days between booking date and arrival date")
-        arrival_year = st.number_input("Arrival Year", min_value=2022, value=2025)
+        arrival_year = st.number_input("Arrival Year", min_value=2017, value=2025)
         arrival_month = st.number_input("Arrival Month", min_value=1, max_value=12, value=5)
         arrival_date = st.number_input("Arrival Date", min_value=1, max_value=31, value=15)
         market_segment_type = st.selectbox("Market Segment Type", ['Online', 'Offline', 'Corporate', 'Complementary', 'Aviation'])
