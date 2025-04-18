@@ -17,7 +17,7 @@ def user_input_form():
         type_of_meal_plan = st.selectbox("Meal Plan", ['Meal Plan 1', 'Meal Plan 2', 'Meal Plan 3', 'Not Selected'])
         required_car_parking_space = st.selectbox("Required Car Parking Space", [0, 1])
         room_type_reserved = st.selectbox("Room Type Reserved", ['Room_Type 1', 'Room_Type 2', 'Room_Type 3', 'Room_Type 4', 'Room_Type 5', 'Room_Type 6', 'Room_Type 7'])
-        lead_time = st.number_input("Lead Time (Days)", min_value=0, value=1)
+        lead_time = st.number_input("Number of Days Between Booking and Arrival", min_value=0, value=1, help="= Number of days between booking date and arrival date")
         arrival_year = st.number_input("Arrival Year", min_value=2022, value=2025)
         arrival_month = st.number_input("Arrival Month", min_value=1, max_value=12, value=5)
         arrival_date = st.number_input("Arrival Date", min_value=1, max_value=31, value=15)
@@ -58,7 +58,22 @@ def user_input_form():
 def predict_booking_status(input_dict):
     df = pd.DataFrame([input_dict])
 
-    # Ganti mapping pakai replace karena encoders-nya dictionary
+    # Drop kolom booking_id karena tidak dipakai waktu training
+    if 'booking_id' in df.columns:
+        df = df.drop('booking_id', axis=1)
+
+    # Buat kolom total_no_of_nights seperti saat training
+    df["total_no_of_nights"] = df["no_of_weekend_nights"] + df["no_of_week_nights"]
+
+    # Daftar kolom yang digunakan untuk melatih model
+    required_columns = ['no_of_adults', 'no_of_children', 'no_of_weekend_nights', 'no_of_week_nights', 'type_of_meal_plan', 
+                    'required_car_parking_space', 'room_type_reserved', 'lead_time', 'arrival_year', 'arrival_month', 
+                    'arrival_date', 'market_segment_type', 'repeated_guest', 'no_of_previous_cancellations', 
+                    'no_of_previous_bookings_not_canceled', 'avg_price_per_room', 'no_of_special_requests']
+    
+    df = df[required_columns]
+    
+    # Encode kolom kategorikal sesuai mapping
     for col, mapping in encoders.items():
         if col in df.columns:
             df[col] = df[col].replace(mapping)
@@ -66,6 +81,7 @@ def predict_booking_status(input_dict):
     # Prediksi status pemesanan
     pred = model.predict(df)[0]
     return pred
+
 
 # Fungsi utama aplikasi Streamlit
 def main():
