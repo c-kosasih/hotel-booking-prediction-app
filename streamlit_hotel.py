@@ -58,12 +58,10 @@ def user_input_form():
 def predict_booking_status(input_dict):
     df = pd.DataFrame([input_dict])
 
-    df[["type_of_meal_plan", "market_segment_type"]] = encoders.transform(
-        df[["type_of_meal_plan", "market_segment_type"]]
-    )
-
-    for col, le in encoders.items():
-        df[col] = le.transform(df[col])
+    # Ganti mapping pakai replace karena encoders-nya dictionary
+    for col, mapping in encoders.items():
+        if col in df.columns:
+            df[col] = df[col].replace(mapping)
 
     # Prediksi status pemesanan
     pred = model.predict(df)[0]
