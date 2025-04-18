@@ -44,7 +44,7 @@ class HotelBookingModel:
         )
 
     def train_model(self):
-        self.model = RandomForestClassifier(random_state=self.seed)
+        self.model = RandomForestClassifier(n_estimators=50, max_depth=25, random_state=self.SEED)
         self.model.fit(self.X_train, self.y_train)
 
     def predict(self):
