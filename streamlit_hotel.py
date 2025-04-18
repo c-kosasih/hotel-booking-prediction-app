@@ -92,7 +92,7 @@ def main():
 
     if user_data:
         result = predict_booking_status(user_data)
-        if result == 1:
+        if result == 0:
             st.success("YOUR BOOKING IS CANCELED")
         else: 
             st.error("YOUR BOOKING IS NOT CANCELED")
