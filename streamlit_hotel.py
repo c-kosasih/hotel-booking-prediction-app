@@ -92,10 +92,10 @@ def main():
 
     if user_data:
         result = predict_booking_status(user_data)
-        if result == 0:
-            st.success("YOUR BOOKING IS CANCELED")
+        if result == 1:
+            st.error("YOUR BOOKING IS CANCELED") # warna merah
         else: 
-            st.error("YOUR BOOKING IS NOT CANCELED")
+            st.success("YOUR BOOKING IS NOT CANCELED") # warna hijau
 
 if __name__ == "__main__":
     main()
