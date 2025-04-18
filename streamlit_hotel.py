@@ -3,10 +3,10 @@ import joblib
 import pandas as pd
 
 # Load model dan encoders
-model = joblib.load("savedPickle/rf_model.pkl")
-encoders = joblib.load("savedPickle/encoders.pkl")
+model = joblib.load("rf_model.pkl")
+encoders = joblib.load("encoders.pkl")
 
-# Fungsi untuk form input pengguna
+# Input Pengguna
 def user_input_form():
     with st.form("hotel_booking_form"):
         booking_id = st.text_input("Booking ID")
@@ -54,16 +54,14 @@ def user_input_form():
     else:
         return None
 
-# Fungsi untuk prediksi
+# Predict
 def predict_booking_status(input_dict):
     df = pd.DataFrame([input_dict])
 
-    # Menggunakan OrdinalEncoder untuk fitur ordinal
     df[["type_of_meal_plan", "market_segment_type"]] = encoders.transform(
         df[["type_of_meal_plan", "market_segment_type"]]
     )
 
-    # Menggunakan LabelEncoder untuk fitur kategorikal
     for col, le in encoders.items():
         df[col] = le.transform(df[col])
 
